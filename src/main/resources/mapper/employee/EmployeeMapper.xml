@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+
+  namespace：名称空间,随便写
+  id：唯一标识
+  resultType:返回值类型
+  #{id}:从传递过来的参数中，取出id值
+
+  唯一标识：建议用命名空间+id 组合成为唯一标识
+
+
+-->
+<!--传统方式-->
+<!--<mapper namespace="com.hx.mybatis.bean.EmployeeMapper">-->
+    <!--<select id="selectEmployee" resultType="com.hx.mybatis.bean.Employee">-->
+       <!--select id,last_name as lastName,gender,email from tbl_Employee where id = #{id}-->
+    <!--</select>-->
+<!--</mapper>-->
+
+<mapper namespace="com.hx.mybatis.dao.EmployeeMapper">
+    <select id="getEmployeeById" resultType="com.hx.mybatis.bean.Employee">
+       select * from tbl_Employee where id = #{id}
+    </select>
+
+    <select id="getEmployeeByIdAndLastName" resultType="com.hx.mybatis.bean.Employee">
+       select * from tbl_Employee where id = #{id} and last_name = #{lastName}
+    </select>
+
+    <select id="getEmployeeByPOJO" resultType="com.hx.mybatis.bean.Employee">
+       select * from tbl_Employee where id = #{id} and last_name = #{lastName}
+    </select>
+
+    <!--List<Employee> getEmployeesByName(String lastName);  注意，这里的返回值类型还是实体类-->
+    <select id="getEmployeesByName" resultType="com.hx.mybatis.bean.Employee">
+       select * from tbl_Employee where id = #{id} and last_name like #{lastName}
+    </select>
+
+
+    <!--插入可以不指定参数类型-->
+    <insert id="insertEmp" parameterType="com.hx.mybatis.bean.Employee"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_employee(last_name,gender,email) values (#{lastName},#{gender},#{email})
+    </insert>
+    <update id="updateEmp">
+        update tbl_employee
+          set last_name = #{lastName},
+              gender = #{gender},
+              email = #{email}
+          where id = #{id}
+    </update>
+    <delete id="delEmp" >
+        delete from tbl_employee where id = #{id}
+    </delete>
+
+
+</mapper>

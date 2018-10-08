@@ -17,37 +17,42 @@ import java.io.InputStream;
  */
 public class MybatisTest {
 
-    private SqlSessionFactory sqlSessionFactory = null;
-    private SqlSession sqlSession = null;
-
-
-    @Before
-    public void before() throws IOException {
+    private SqlSessionFactory getSqlSessionFactory() throws IOException {
         String resource = "config/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        sqlSession = sqlSessionFactory.openSession();
-    }
-
-    @After
-    public void after() {
-        sqlSession.close();
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        return sqlSessionFactory;
     }
 
 
+    //测试原始用法
     @Test
-    public void test1() {
+    public void test1() throws IOException {
         //参数：sql的唯一标识，参数
-        Employee employee = sqlSession.selectOne("com.hx.mybatis.bean.EmployeeMapper.selectEmployee", 1);
-        System.out.println(employee);
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Employee employee = sqlSession.selectOne("com.hx.mybatis.bean.EmployeeMapper.selectEmployee", 1);
+            System.out.println(employee);
+        }finally {
+            sqlSession.close();
+
+        }
     }
 
     @Test
-    public void testInterface() {
-        EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
-        System.out.println("---------------------------------");
-        Employee employee = mapper.getEmployeeById(1);
-        System.out.println(employee.toString());
+    public void testInterface() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+            System.out.println("---------------------------------");
+            Employee employee = mapper.getEmployeeById(1);
+            System.out.println(employee.toString());
+        }finally {
+            sqlSession.close();
+
+        }
     }
 
 

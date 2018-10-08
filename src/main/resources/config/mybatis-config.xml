@@ -51,7 +51,7 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="./mapper/EmployeeMapper.xml"/>
+        <mapper resource="./mapper/employee/EmployeeMapper.xml"/>
     </mappers>
 
 
