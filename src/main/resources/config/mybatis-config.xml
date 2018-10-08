@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--
+    properties 节点 引入外部配置文件
+        resource:表示引入类路径下的文件
+        url：    表示引入网络资源或磁盘资源
+    -->
+    <properties resource="./config/db.properties"/>
+    <!--settings配置很重要-->
+    <settings>
+        <!--开启驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <!--不写alias时，默认值为 employee（类名小写），有alias时，取emp
+            别名，不区分大小写
+        -->
+        <!--<typeAlias type="com.hx.mybatis.bean.Employee" alias="emp"/>-->
+
+        <!--批量对包下的所有类，包括子包，设置别名-->
+        <package name="com.hx.mybatis.bean"/>
+
+        <!--使用@Alias注解    -->
+
+    </typeAliases>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="com.hx.mybatis.C3P0DataSourceFactory">
+                <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+                <!--<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mybatis"/>-->
+                <!--<property name="user" value="root"/>-->
+                <!--<property name="password" value="root"/>-->
+
+                <property name="driverClass" value="${jdbc.driver}"/>
+                <property name="jdbcUrl" value="${jdbc.url}"/>
+                <property name="user" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+
+                <!--<property name="driver" value="${jdbc.driver}"/>-->
+                <!--<property name="url" value="${jdbc.url}"/>-->
+                <!--<property name="username" value="${jdbc.username}"/>-->
+                <!--<property name="password" value="${jdbc.password}"/>-->
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="./mapper/EmployeeMapper.xml"/>
+    </mappers>
+
+
+</configuration>

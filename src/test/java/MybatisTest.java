@@ -1,4 +1,5 @@
 import com.hx.mybatis.bean.Employee;
+import com.hx.mybatis.dao.EmployeeMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -22,26 +23,32 @@ public class MybatisTest {
 
     @Before
     public void before() throws IOException {
-        String resource = "mybatis-config.xml";
+        String resource = "config/mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         sqlSession = sqlSessionFactory.openSession();
     }
 
     @After
-    public void after(){
+    public void after() {
         sqlSession.close();
     }
 
 
     @Test
-    public void test1(){
+    public void test1() {
         //参数：sql的唯一标识，参数
         Employee employee = sqlSession.selectOne("com.hx.mybatis.bean.EmployeeMapper.selectEmployee", 1);
         System.out.println(employee);
-
     }
 
+    @Test
+    public void testInterface() {
+        EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+        System.out.println("---------------------------------");
+        Employee employee = mapper.getEmployeeById(1);
+        System.out.println(employee.toString());
+    }
 
 
 }
